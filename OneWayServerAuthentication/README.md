@@ -1,4 +1,4 @@
-﻿#**WCF One-way Service Certificate Authentication **
+# **WCF One-way Service Certificate Authentication **
 
 (Updated: October 26th 2017)
 
@@ -6,12 +6,10 @@ This example project covers how to authenticate a server using certificates in W
 
 ----------
 
-[TOC]
-
-##Service App.config
+## Service App.config
 
 
-### < serviceBehavior >
+### <serviceBehavior>
 
 This is where the certificate information is defined for the service. This information includes both where the service certificate is defined
 
@@ -29,7 +27,7 @@ With WCF there are two requirements to work with **self-signed certificates**:
  **However** the client machine needs the service certificate in its **trustedPeople** store.
  
 
-### < bindings >
+### <bindings>
 
 This is where the endpoint binding information is defined for the service. The binding uses specific security elements to define the authentication between the service and client
 
@@ -56,7 +54,7 @@ To properly set up a binding where we the service authenticate against the clien
 > This is important to note because if the security element is not in the correct place, it will not work correctly. Another thing to consider is the only element actually required in a custom binding is the **Transport** element.
 
 
-### < endpoint >
+### <endpoint>
 
     <endpoint address="" binding="customBinding" bindingConfiguration="SecureBinding" contract="TwoWayAuthenticationBasicService.IBasicService">
         <identity>
@@ -64,13 +62,13 @@ To properly set up a binding where we the service authenticate against the clien
         </identity>
     </endpoint>
 
-The endpoint contains an element called '< identity >', for the service certificate it is required that the dns value defined by < identity > matches the Subject Name (sometimes referred to as the Common Name) of the service certificate
+The endpoint contains an element called <identity>, for the service certificate it is required that the dns value defined by <identity> matches the Subject Name (sometimes referred to as the Common Name) of the service certificate
 
 -----
 
-##Client App.Config
+## Client App.Config
 
-### < endpointBehavior >
+### <endpointBehavior>
 
 The important part of the client config is configuring the endpoint behavior to the service correctly. This is where we will define how to authenticate the service certificate.
 
@@ -80,11 +78,4 @@ The important part of the client config is configuring the endpoint behavior to 
         </serviceCertificate>
     </clientCredentials>
 
-Under < serviceCertificate >  we specify how to authenticate against the service certificate. Because we are using self-signed certificates, the **certificateValidationMode** is set to **PeerTrust**, **PeerOrChainTrust** would also work as that will check to see if the certificate will fail against **ChainTrust**, which it will, it will fallback and then use **PeerTrust** where it should succeed 
-
-
-##Troubleshooting 
-
-
-
-> Written with [StackEdit](https://stackedit.io/). 
+Under <serviceCertificate>  we specify how to authenticate against the service certificate. Because we are using self-signed certificates, the **certificateValidationMode** is set to **PeerTrust**, **PeerOrChainTrust** would also work as that will check to see if the certificate will fail against **ChainTrust**, which it will, it will fallback and then use **PeerTrust** where it should succeed 
