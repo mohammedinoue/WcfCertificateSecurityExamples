@@ -1,4 +1,4 @@
-# **WCF One-way Service Certificate Authentication **
+# WCF One-way Service Certificate Authentication
 
 (Updated: October 26th 2017)
 

@@ -5,7 +5,7 @@ This repository holds several examples for using certificates with WCF and diffe
 
 ### One-Way Server Certificate Authentication
 Authenticates using a service's certificate
-[Click here for more information](https://github.com/mohammedinoue/WcfCertificateSecurityExamples/blob/master/TwoWayAuthentication/README.md)
+[Click here for more information](https://github.com/mohammedinoue/WcfCertificateSecurityExamples/blob/master/OneWayServerAuthentication/README.md)
 
 ### Two-Way Certificate Authentication
 Authenticates using both the client and service's certificate 
