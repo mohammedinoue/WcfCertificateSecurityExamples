@@ -12,7 +12,7 @@ namespace MutualSSLAuthenticationClient
     class Program
     {
 
-        static async void Main(string[] args)
+        static void Main(string[] args)
         {
             var baseAddress = string.Empty;
             Console.WriteLine("Hit up the \"API\" (e.g. https://localhost:port/APINAME) : ");
@@ -46,7 +46,8 @@ namespace MutualSSLAuthenticationClient
                 try
                 {
                     //Hit up the API
-                    var response = await client.GetAsync(destination);
+                    var response =  client.GetAsync(destination).GetAwaiter().GetResult();
+
                     Console.WriteLine(response);
                 }
                 catch (Exception ex)
@@ -54,8 +55,6 @@ namespace MutualSSLAuthenticationClient
                     Console.WriteLine(ex.Message);
                 }
             }while(destination != string.Empty);
-
-
         }
     }
 }
