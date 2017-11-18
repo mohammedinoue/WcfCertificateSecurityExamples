@@ -40,8 +40,8 @@ To take advantage of multiple endpoints, we can use baseAddress in our service. 
 	<host>
 		<baseAddresses>
 			<add baseAddress = "http://localhost:8733/MultipleEndpoints/" />
-            <add baseAddress = "https://localhost:8734/MultipleEndpoints/" />
-            <add baseAddress = "net.tcp://localhost:8735/MultipleEndpoints/" />
+			<add baseAddress = "https://localhost:8734/MultipleEndpoints/" />
+			<add baseAddress = "net.tcp://localhost:8735/MultipleEndpoints/" />
 		</baseAddresses>
 	</host>
 
@@ -55,22 +55,22 @@ This is where the endpoint binding information is defined for the service. The b
 To take advantage of our multiple endpoints we can define unique bindings to each of them and define them under the < binding > tag within the app.config file
  
 	<netTcpBinding>
-        <binding name ="secureNetTcpBinding">
-          <security mode="Transport">
-            <transport clientCredentialType="None"/>
-          </security>
-        </binding>
+		<binding name ="secureNetTcpBinding">
+			<security mode="Transport">
+				<transport clientCredentialType="None"/>
+			</security>
+		</binding>
 			<binding name ="unsecureNetTcpBinding">
-        </binding>
+		</binding>
 	</netTcpBinding>
 	<wsHttpBinding>
-        <binding name ="secureHttpBinding">
-          <security mode="Transport">
-            <transport clientCredentialType="None"/>
-          </security>
-        </binding>
+		<binding name ="secureHttpBinding">
+			<security mode="Transport">
+				<transport clientCredentialType="None"/>
+			</security>
+		</binding>
 			<binding name ="unsecureHttpBinding">
-        </binding>
+		</binding>
 	</wsHttpBinding>
 
 As you can see we have two bindings that are unsecure, and two bindings that are secure. This means that if a user tries to connect to secureNetTcpBinding or secureHttpBinding, 
@@ -88,10 +88,13 @@ Every endpoint defined is under 1 service, thus we only need to use one service 
 		<serviceDebug includeExceptionDetailInFaults="False" />
 		<serviceCredentials>
 			<serviceCertificate x509FindType="FindByThumbprint" findValue ="3c4069c8baa2381a4842d3502865fd7b6643d04e" storeLocation="LocalMachine" storeName="TrustedPeople"/>
-        </serviceCredentials>
+		</serviceCredentials>
 	</behavior>
 
-As noted above, since we are using a certificate for some of our bindings, *we stil need to define a certificate*. 
+As noted above, since we are using a certificate for some of our bindings, *we stil need to define a certificate*. For the Http binding we also have to define the server certificate through netsh shown in [MutualSSLAuthentication](https://github.com/mohammedinoue/WcfCertificateSecurityExamples/blob/master/MutualSSLSelfHostedAuthentication/README.md). 
+
+
+
 -----
 
 ## Client App.Config
@@ -101,11 +104,11 @@ As noted above, since we are using a certificate for some of our bindings, *we s
 The important part of the client config is configuring the endpoint behavior to the service correctly. This is where we will define the client certificate's information and how to authenticate the service certificate.
 Since only some of the bindings use certificates, this behavior will only need to be attached to the endpoints that are secure.
 
-    <clientCredentials>
+	<clientCredentials>
 		<serviceCertificate>
-            <authentication certificateValidationMode="PeerTrust" trustedStoreLocation="LocalMachine" revocationMode="NoCheck"/>
-        </serviceCertificate>
-    </clientCredentials>
+			<authentication certificateValidationMode="PeerTrust" trustedStoreLocation="LocalMachine" revocationMode="NoCheck"/>
+		</serviceCertificate>
+	</clientCredentials>
 
 ### < bindings >
 
