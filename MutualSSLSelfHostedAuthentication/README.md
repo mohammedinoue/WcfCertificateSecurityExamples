@@ -1,6 +1,6 @@
 # **WCF Mutual SSL SelfHosted Authentication**
 
-(Updated: November 17th 2017)
+(Updated: November 20th 2017)
 
 This example project covers how to authenticate both the client and server using certificates in WCF, this example uses self-signed certificates on both the service and client end.
 
@@ -112,3 +112,30 @@ Finally we hook our client up with the client handler we have created
 
 Then we can use that client to connect to the service and authentication will occur.
 
+-----
+
+## Troubleshooting
+
+1. During the handshake between the client and server and error is thrown from AcquireCredentialsHandle() where it fails with error code 0X8009030D
+
+This occurs due to AcquireCredentialsHandle() is attempting to grab the credentials needed to continue with the handshake. When using certificates, its important that the private
+key of the certificate is reachable when AcquireCredentialsHandle() is being called. So the solution to this problem is to ensure that it is reachable by modifying the Access Control List of the certificate in question. This can be done via MMC (Microsoft Management Console) 
+and placing the certificate into the **Personal** store. Then right clicking the certificate and going to **All Task** > **Manage Private Keys**
+
+2. The remote certificate is not valid according to validation
+
+This occurs when the certificate you are receiving during the handshake is not trusted by the client. If you are using self-signed certificates, then the server certificate should be 
+placed into the **TrustedPeople** store. This can be done by exporting the server certificate from the server machine as a pfx from via MMC by right clicking the certificate and going to **All Tasks** then **Export**
+
+3. Server responded with the message **Forbidden** 
+
+This is due to the credentials given by the client not passing validation. If you are using the custom certificate validator in this example, the requirement is for the client certificate to be installed into the server machines **TrustedPeople** store 
+
+
+4. Unable to read the transport connection 
+
+No proper entry point to the application has been created for the client. This can occur if you have not used netsh to properly bind the server certificate to the endpoints port. This can be solved by using the **netsh http add sslcert command** given above.
+
+5. Method Not Allowed
+
+This can be caused by endpoints not being specified correctly for the HTTP GET function to be performed. A Problem that can cause this if the endpoint doesnt properly specify a name when it needs to.

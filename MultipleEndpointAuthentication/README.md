@@ -1,6 +1,6 @@
 #### **WCF Multiple Endpoints Authentication**
 
-(Updated: November 18th 2017)
+(Updated: November 20th 2017)
 
 This example shows how to use multiple endpoints to access the same service where each endpoint differs through binding and security
 
@@ -146,3 +146,10 @@ The other two bindings *do not require any behaviorConfiguration.*
 
 Like the definition in the Service App.config, we specify where to find the certificate, then under < serviceCertificate >  we specify how to authenticate against the service certificate.
 
+-----
+
+## Troubleshooting
+
+1. If two endpoints want to share the same ListenUri, they must also share the same binding object instance. 
+
+This can be caused by endpoints not being able to be differentiated by one another, a solution is to properly make sure that their address/name element is different from one another.
