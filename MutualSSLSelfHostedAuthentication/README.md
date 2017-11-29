@@ -1,6 +1,6 @@
 # **WCF Mutual SSL SelfHosted Authentication**
 
-(Updated: November 20th 2017)
+(Updated: November 28th 2017)
 
 This example project covers how to authenticate both the client and server using certificates in WCF, this example uses self-signed certificates on both the service and client end.
 
@@ -96,7 +96,7 @@ Since we set up the port we are connecting through using Netsh, upon connecting 
 	}
 
 	clientHandler.ClientCertificates.Add(certificate);
-	clientHandler.AuthenticationLevel = AuthenticationLevel.MutualAuthRequested;
+	clientHandler.ServerCertificateValidationCallback += ServerCertificateValidationCallback;
 
 	var client = new HttpClient(clientHandler)
 	{
@@ -105,8 +105,9 @@ Since we set up the port we are connecting through using Netsh, upon connecting 
 
 Our client uses WebRequestHandler since that will allow us to tie our HttpClient with our certificate information
 
-We then load the certificate from the machine we are on and attach it to the clientHandler. We set the clientHandlers authenticationLevel to
-MutualAuthRequested
+We also need to attach a callback for our clientHandler to tell it what to do upon receiving the server certificate. This is done by setting clientHandler.ServerCertificateValidationCallback to a function, in this case called ServerCertificateValidationCallback. Where like in the server side custom validator, it checks if the certificate exist in the **TrustedPeople** store.
+
+We then load the certificate from the machine we are on and attach it to the clientHandler. 
 
 Finally we hook our client up with the client handler we have created
 
